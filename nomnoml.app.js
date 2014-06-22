@@ -12,7 +12,9 @@ $(function (){
 	var linkLink = document.getElementById('linkbutton')
 	var canvasElement = document.getElementById('canvas')
 	var defaultSource = document.getElementById('defaultGraph').innerHTML
-	var graphics = skanaar.Canvas(canvasElement, {})
+
+
+	var graphics = skanaar.Svg(canvasElement, {})
 	
 	window.addEventListener('resize', _.throttle(sourceChanged, 750, {leading: true}))
 	textarea.addEventListener('input', _.debounce(sourceChanged, 300))
@@ -113,9 +115,11 @@ $(function (){
 	function parseAndRender(){
 		var ast = nomnoml.parse(textarea.value)
 		var config = getConfig(ast.directives)
+		graphics.ctx.config = config;
 	    var measurer = {
 	    	setFont: setFont,
-	        textWidth: function (s){ return graphics.ctx.measureText(s).width },
+	        textWidth: function (s){ 
+	        	return graphics.ctx.measureText(s).width },
 	        textHeight: function (s){ return config.leading * config.fontSize }
 	    }
 		var layout = nomnoml.layout(measurer, config, ast)

@@ -15,8 +15,10 @@
 	<div class="wrap">
 
 		<canvas id="canvas"></canvas>
+		<div id="svg" style="position:absolute;width:100%;height:100%;left:520px;"></div>
 		<textarea id="textarea" spellcheck="false"></textarea>
 		<textarea id="linenumbers" disabled></textarea>
+
 
 		<div id="reference" class="sidebar">
 			<div class="content">
@@ -204,13 +206,16 @@
 	<script src="lib/underscore.js"></script>
 	<script src="lib/underscore.skanaar.js"></script>
 	<script src="lib/dagre.min.js"></script>
-	<script src="lib/skanaar.canvas.js"></script>
+	<script src="lib/svg.min.js"></script>
+	<script src="lib/svg.path.min.js"></script>
+	
 	<script src="lib/vector.js"></script>
 	<script src="nomnoml.jison.js"></script>
 	<script src="nomnoml.parser.js"></script>
 	<script src="nomnoml.layouter.js"></script>
-	<script src="nomnoml.renderer.js"></script>
+	<script src="nomnoml.svgrenderer.js"></script>
 	<script src="nomnoml.app.js"></script>
+	<script src="lib/skanaar.svg.js"></script>
 
 	<script>
 		var tooltip = $('#tooltip')[0]
@@ -220,15 +225,6 @@
 		})
 	</script>
 
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-50041909-1', 'nomnoml.com');
-		ga('send', 'pageview');
-
-	</script>
 </body>
 </html>
