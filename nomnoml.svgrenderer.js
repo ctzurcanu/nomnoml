@@ -18,7 +18,8 @@ nomnoml.render = function (graphics, config, compartment, setFont){
 				var w = g.ctx.measureText(text).width
 				y += Math.round(config.fontSize * 0.1)+0.5
 				g.ctx.lineWidth = Math.round(config.fontSize/10)
-				g.path([{x:x-w/2, y:y}, {x:x+w/2, y:y}])//.stroke()
+				var last = g.path([{x:x-w/2, y:y}, {x:x+w/2, y:y}])//.stroke()
+				g.ctx.stroke(last)
 			}
 		})
 		g.ctx.translate(config.gutter, config.gutter)
@@ -55,78 +56,100 @@ nomnoml.render = function (graphics, config, compartment, setFont){
 		var shade = config.fill[level] || _.last(config.fill)
 		g.ctx.fillStyle = shade
 		if (node.type === 'NOTE'){
-			g.circuit([
+			var last = g.circuit([
 				{x: x, y: y},
 				{x: x+node.width-padding, y: y},
 				{x: x+node.width, y: y+padding},
 				{x: x+node.width, y: y+node.height},
 				{x: x, y: y+node.height},
 				{x: x, y: y}
-			]).fill().stroke()
-			g.path([
+			])//.fill().stroke()
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
+			var last = g.path([
 				{x: x+node.width-padding, y: y},
 				{x: x+node.width-padding, y: y+padding},
 				{x: x+node.width, y: y+padding}
-			]).stroke()
+			])//.stroke()
+			g.ctx.stroke(last)
 		} else if (node.type === 'START') {
 			g.ctx.fillStyle = config.stroke
-			g.circle(x+node.width/2, y+node.height/2, node.height/2.5)//.fill()
+			var last = g.circle(x+node.width/2, y+node.height/2, node.height/2.5)//.fill()
+			g.ctx.fill(last)
 		} else if (node.type === 'END') {
-			g.circle(x+node.width/2, y+node.height/2, node.height/3)//.fill().stroke()
+			var last = g.circle(x+node.width/2, y+node.height/2, node.height/3)//.fill().stroke()
 			g.ctx.fillStyle = config.stroke
 			g.circle(x+node.width/2, y+node.height/2, node.height/3-padding/2)//.fill()
 		} else if (node.type === 'STATE') {
 			var r = Math.min(padding*2*config.leading, node.height/2)
-			g.roundRect(x, y, node.width, node.height, r)//.fill().stroke()
+			var last = g.roundRect(x, y, node.width, node.height, r)
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
 		} else if (node.type === 'INPUT') {
-			g.circuit([
+			var last = g.circuit([
 				{x:x+padding, y:y},
 				{x:x+node.width, y:y},
 				{x:x+node.width-padding, y:y+node.height},
 				{x:x, y:y+node.height}
 			])//.fill().stroke()
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
 		} else if (node.type === 'CHOICE') {
-			g.circuit([
+			var last = g.circuit([
 				{x:node.x, y:y - padding},
 				{x:x+node.width + padding, y:node.y},
 				{x:node.x, y:y+node.height + padding},
 				{x:x - padding, y:node.y}
 			])//.fill().stroke()
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
 		} else if (node.type === 'PACKAGE') {
 			var headHeight = node.compartments[0].height
 			g.ctx.fillRect(x, y+headHeight, node.width, node.height-headHeight)
 			g.ctx.strokeRect(x, y+headHeight, node.width, node.height-headHeight)
 			var w = g.ctx.measureText(node.name).width + 2*padding
-			g.circuit([
+			var last = g.circuit([
 				{x:x, y:y+headHeight},
 				{x:x, y:y},
 				{x:x+w, y:y},
 				{x:x+w, y:y+headHeight}
 		    ])//.fill().stroke()
+		    g.ctx.fill(last)
+			g.ctx.stroke(last)
 		} else if (node.type === 'SENDER') {
-			g.circuit([
+			var last = g.circuit([
 				{x: x, y: y},
 				{x: x+node.width-padding, y: y},
 				{x: x+node.width+padding, y: y+node.height/2},
 				{x: x+node.width-padding, y: y+node.height},
 				{x: x, y: y+node.height}
 			])//.fill().stroke()
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
 		} else if (node.type === 'RECEIVER') {
-			g.circuit([
+			var last = g.circuit([
 				{x: x, y: y},
 				{x: x+node.width+padding, y: y},
 				{x: x+node.width-padding, y: y+node.height/2},
 				{x: x+node.width+padding, y: y+node.height},
 				{x: x, y: y+node.height}
 			])//.fill().stroke()
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
 		} else if (node.type === 'DATABASE') {
 			var cx = x+node.width/2
 			var cy = y-padding/2
 			g.ctx.fillRect(x, y, node.width, node.height)
-			g.path([{x: x, y: cy}, {x: x, y: cy+node.height}])//.stroke()
-			g.path([{x: x+node.width, y: cy}, {x: x+node.width, y: cy+node.height}])//.stroke()
-			g.ellipse({x: cx, y: cy}, node.width, padding*1.5)//.fill().stroke()
-			g.ellipse({x: cx, y: cy+node.height}, node.width, padding*1.5, 0, 3.1416)//.fill().stroke()
+			var last = g.path([{x: x, y: cy}, {x: x, y: cy+node.height}])//.stroke()
+			g.ctx.stroke(last)
+			var last = g.path([{x: x+node.width, y: cy}, {x: x+node.width, y: cy+node.height}])//.stroke()
+			g.ctx.stroke(last)
+			var last = g.ellipse({x: cx, y: cy}, node.width, padding*1.5)//.fill().stroke()
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
+			var last = g.ellipse({x: cx, y: cy+node.height}, node.width, padding*1.5, 0, 3.1416)//.fill().stroke()
+			g.ctx.fill(last)
+			g.ctx.stroke(last)
 		} else {
 			g.ctx.fillRect(x, y, node.width, node.height)
 			g.ctx.strokeRect(x, y, node.width, node.height)
@@ -144,14 +167,16 @@ nomnoml.render = function (graphics, config, compartment, setFont){
 			yDivider += part.height
 			if (node.type === 'FRAME' && i === 0){
 				var w = g.ctx.measureText(node.name).width + part.height/2 + padding
-				g.path([
+				var last = g.path([
 					{x:x, y:yDivider},
 					{x:x+w-part.height/2, y:yDivider},
 					{x:x+w, y:yDivider-part.height/2},
 					{x:x+w, y:yDivider-part.height}
 			    ])//.stroke()
+				g.ctx.stroke(last)
 			} else
-				g.path([{x:x, y:yDivider}, {x:x+node.width, y:yDivider}])//.stroke()
+				var last = g.path([{x:x, y:yDivider}, {x:x+node.width, y:yDivider}])//.stroke()
+				g.ctx.stroke(last)
 		})
 	}
 
@@ -159,23 +184,24 @@ nomnoml.render = function (graphics, config, compartment, setFont){
 		if (config.edges === 'rounded'){
 			var radius = config.spacing * config.bendSize
 			var path = "M"+p[0].x+","+p[0].y;
-			
-	        //g.ctx.beginPath()
-	        //g.ctx.moveTo(p[0].x, p[0].y)
 			for (var i = 1; i < p.length-1; i++){
 				var vec = diff(p[i], p[i-1])
-				var bendStart = add(p[i-1], mult(normalize(vec), mag(vec)-radius))
-				path = path+"L"+bendStart.x+","+bendStart.y
-				//150,150 0 0,0 -150,150
-				path = path+"A"+radius+","+radius+" 0 0,0 "+p[i].x+","+p[i].y
+				var bendStart = add(p[i-1], mult(normalize(vec), mag(vec)-radius/1.5))
+				var arcS = p[i].x-bendStart.x  <= 0 ? "0" : "1";
+			    var d = [
+			        "L",  bendStart.x, bendStart.y, 
+			        "a " ,radius ,radius ,0, 0,arcS ,p[i].x-bendStart.x ,p[i].y-bendStart.y 
+			        // "a " ,radius ,radius ,0, 0,0 ,p[i].x-bendStart.x ,p[i].y-bendStart.y 
+			    ].join(" ");
+			    path = path+d
 			}
 			path = path+"L"+_.last(p).x+","+_.last(p).y
-			//path.L(_.last(p).x, _.last(p).y)
-			g.svg.path(path).attr({fill: "none",stroke:config.stroke,"stroke-width":config.lineWidth,"stroke-dasharray":g.ctx.dash});
-	        //g.ctx.stroke()
+			var last = g.svg.path(path).attr({fill:"none","stroke-dasharray":g.ctx.dash})
+			g.ctx.stroke(last)
 		}
 		else {
-			g.svg.path(p).attr({fill: "none",stroke:config.stroke,"stroke-width":config.lineWidth,"stroke-dasharray":g.ctx.dash}); //.stroke()
+			var last = g.svg.path(p).attr({"stroke-dasharray":g.ctx.dash})
+			g.ctx.stroke(last)
 		}
 	}
 
@@ -247,6 +273,8 @@ nomnoml.render = function (graphics, config, compartment, setFont){
 		]
 		g.ctx.fillStyle = isOpen ? config.stroke : config.fill[0]
 		var ctx = g.circuit(arrow) //.fill().stroke()
+		g.ctx.fill(ctx)
+		g.ctx.stroke(ctx)
 	}
 
 	function snapToPixels(){
