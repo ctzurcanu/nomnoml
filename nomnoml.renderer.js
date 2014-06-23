@@ -251,6 +251,9 @@ nomnoml.render = function (graphics, config, compartment, setFont){
 
 	g.clear()
 	setFont(config, 'bold')
+	jqCanvas =document.getElementById("canvas")
+	g.ctx.width =jqCanvas.width
+	g.ctx.height =jqCanvas.height
 	g.ctx.save()
 	g.ctx.lineWidth = config.lineWidth
 	g.ctx.lineJoin = 'round'
@@ -259,5 +262,12 @@ nomnoml.render = function (graphics, config, compartment, setFont){
 	g.ctx.scale(config.zoom, config.zoom)
 	snapToPixels()
 	renderCompartment(compartment, {}, 0)
+
 	g.ctx.restore()
+
+	var out =g.ctx.getSvg();
+	
+	document.getElementById("svg").appendChild(out)
+	svgPan('');
+	//console.info(out)
 }

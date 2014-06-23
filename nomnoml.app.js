@@ -13,8 +13,8 @@ $(function (){
 	var canvasElement = document.getElementById('canvas')
 	var defaultSource = document.getElementById('defaultGraph').innerHTML
 
-
-	var graphics = skanaar.Svg(canvasElement, {})
+	var graphics = skanaar.Canvas(canvasElement, {})
+	//var graphics = skanaar.Svg(canvasElement, {})
 	
 	window.addEventListener('resize', _.throttle(sourceChanged, 750, {leading: true}))
 	textarea.addEventListener('input', _.debounce(sourceChanged, 300))
